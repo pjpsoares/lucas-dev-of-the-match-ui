@@ -1,26 +1,57 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import styled from '@emotion/styled';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
-function App() {
+import { Logo, Title } from './shared';
+import { TeamPoints } from './team-points';
+
+const queryClient = new QueryClient();
+
+export const Body = styled.div`
+  background-color: #2e3239;
+  height: 100%;
+  width: 100%;
+`;
+
+const AppMain = styled.main`
+  padding: 20px;
+`;
+
+export const AppHeaderUI = styled.header`
+  padding: 20px;
+`;
+
+const TitleContainer = styled.div`
+  margin-left: 120px;
+  display: inline-block;
+`;
+
+export function AppHeader() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AppHeaderUI>
+      <Logo />
+      <TitleContainer>
+        <Title>Dev of the match</Title>
+      </TitleContainer>
+    </AppHeaderUI>
   );
 }
 
-export default App;
+export function App() {
+  return (
+    <Body>
+      <QueryClientProvider client={queryClient}>
+        <AppHeader />
+        <AppMain>
+          <Router>
+            <Switch>
+              <Route path="/points/:id">
+                <TeamPoints />
+              </Route>
+            </Switch>
+          </Router>
+        </AppMain>
+      </QueryClientProvider>
+    </Body>
+  );
+}
